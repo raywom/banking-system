@@ -83,6 +83,7 @@ public class Card {
         }
     }
 
+
     public boolean deleteCardFromDB() {
         String deleteCardQuery = "DELETE FROM debit_card WHERE number = ?";
         SQLiteDataSource dataSource = new SQLiteDataSource();

@@ -5,9 +5,7 @@ public class MortgageCard {
     private int pin;
     private int customerId;
     private double monthPay;
-    private double surcharge;
     private int monthLeft;
-    private double totalPay;
 
     public String getNumber() {
         return number;
@@ -47,21 +45,5 @@ public class MortgageCard {
 
     public void setMonthLeft(int monthLeft) {
         this.monthLeft = monthLeft;
-    }
-
-    public double getTotalPay() {
-        return totalPay;
-    }
-
-    public void setTotalPay(int totalPay) {
-        this.totalPay = totalPay;
-    }
-
-    public double getSurcharge() {
-        return surcharge;
-    }
-
-    public void setSurcharge(double surcharge) {
-        this.surcharge = surcharge;
     }
 }

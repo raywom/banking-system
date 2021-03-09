@@ -10,15 +10,39 @@ public class User {
     private boolean isMortgageCard;
 
     private Card card;
+    private MortgageCard Mcard;
+    private CreditCard Ccard;
     private Boolean isLoggedIn;
 
     public Card getCard() {
         return card;
     }
 
+    public MortgageCard getMortgageCard() {
+        return Mcard;
+    }
+
+    public CreditCard getCreditCard() {
+        return Ccard;
+    }
+
     public void logIn(Card targetCard) {
         if (targetCard != null) {
             card = Bank.pullCardFromDB(targetCard.getCardNumber());
+            isLoggedIn = true;
+        }
+    }
+
+    public void logIn(CreditCard targetCard) {
+        if (targetCard != null) {
+            Ccard = Bank.pullCardFromDBCreditCard(targetCard.getNumber());
+            isLoggedIn = true;
+        }
+    }
+
+    public void logIn(MortgageCard targetCard) {
+        if (targetCard != null) {
+            Mcard = Bank.pullCardFromDBMortgageCard(targetCard.getNumber());
             isLoggedIn = true;
         }
     }

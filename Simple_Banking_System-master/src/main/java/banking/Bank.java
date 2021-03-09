@@ -44,8 +44,8 @@ public class Bank {
         return cards;
     }
 
-    public static Banker bankerSearch(String login, String password) {
-        String pullCardQuery = "SELECT * FROM bank_worker WHERE login LIKE ? and password like ?";
+    public static Banker bankerSearch(String login, String password){
+        String pullCardQuery = "SELECT * FROM Banker WHERE login LIKE ? and password like ?";
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl(url);
         Banker banker = new Banker();
@@ -53,7 +53,7 @@ public class Bank {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(pullCardQuery);
             preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(1, password);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 // Retrieve card values
                 banker.setName(resultSet.getString("name"));
@@ -62,14 +62,15 @@ public class Bank {
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex){
             ex.printStackTrace();
         }
 
         return banker;
     }
 
-    public static User userSearch(String phone) {
+    public static User userSearch(String phone){
         String pullCardQuery = "SELECT * FROM customer WHERE phone_number LIKE ?";
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl(url);
@@ -80,22 +81,45 @@ public class Bank {
             preparedStatement.setString(1, phone);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 // Retrieve card values
-                user.setName(resultSet.getString("name"));
-                ;
-                user.setSurname(resultSet.getString("surname"));
-                ;
-                user.setPhoneNumber(resultSet.getString("phone_number"));
-                ;
+                user.setName(resultSet.getString("name"));;
+                user.setSurname(resultSet.getString("surname"));;
+                user.setPhoneNumber(resultSet.getString("phone_number"));;
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex){
             ex.printStackTrace();
         }
 
         return user;
     }
 
+    public static MortgageCard pullCardFromDBMortgageCard (String targetCardNumber) {
+        String pullCardQuery = "SELECT * FROM mortgage_card WHERE number LIKE ?";
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl(url);
+        MortgageCard card = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(pullCardQuery);
+            preparedStatement.setString(1, targetCardNumber);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                // Retrieve card values
+                String cardNumber = resultSet.getString("number");
+                int pin = resultSet.getInt("pin");
+                card = new MortgageCard();
+                card.setNumber(cardNumber);
+                card.setPin(pin);
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return card;
+    }
 
     public static Card pullCardFromDB(Long targetCardNumber) {
         String pullCardQuery = "SELECT * FROM debit_card WHERE number LIKE ?";
@@ -113,6 +137,32 @@ public class Bank {
                 long pin = Long.parseLong(resultSet.getString("pin"));
                 double balance = resultSet.getInt("balance");
                 card = new Card().setCardNumber(cardNumber).setPin(pin).setBalance(balance);
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return card;
+    }
+
+    public static CreditCard pullCardFromDBCreditCard(String targetCardNumber) {
+        String pullCardQuery = "SELECT * FROM credit_card WHERE number LIKE ?";
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl(url);
+        CreditCard card = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(pullCardQuery);
+            preparedStatement.setString(1, targetCardNumber);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                // Retrieve card values
+                String cardNumber = resultSet.getString("number");
+                int pin = Integer.parseInt(resultSet.getString("pin"));
+                double balance = resultSet.getInt("balance");
+                card = new CreditCard();
+                card.setPin(pin);
+                card.setNumber(cardNumber);
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
@@ -144,16 +194,16 @@ public class Bank {
         return retVal;
     }
 
-    public static void setIsCard(int what) {
+    public static void setIsCard(int what){
 
     }
 
-    public static MortgageCard CreateMortgageCard(int customerId) {
+    public static MortgageCard CreateMortgageCard (int customerId){
         long accountNumber = generateAccountNumber();
         int pin = generator.nextInt(10_000);
 
         MortgageCard card = new MortgageCard();
-        card.setNumber("" + accountNumber);
+        card.setNumber(""+accountNumber);
         card.setPin(pin);
         card.setCustomerId(customerId);
 
@@ -162,12 +212,12 @@ public class Bank {
         return card;
     }
 
-    public static CreditCard createCreditCard(int customerId) {
+    public static CreditCard createCreditCard(int customerId){
         long accountNumber = generateAccountNumber();
         int pin = generator.nextInt(10_000);
 
         CreditCard card = new CreditCard();
-        card.setNumber("" + accountNumber);
+        card.setNumber(""+accountNumber);
         card.setPin(pin);
         card.customerId = customerId;
 
@@ -189,25 +239,7 @@ public class Bank {
         return card;
     }
 
-    public static void changeStatusOfCreditCard(int idCustomer) {
-        String insertCardQuery = "UPDATE customer SET has_credit_card = ? WHERE id=?";
-        SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl(url);
-
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement psInsertCard = connection.prepareStatement(insertCardQuery);
-
-            psInsertCard.setInt(1, 1);
-            psInsertCard.setInt(2, idCustomer);
-
-            psInsertCard.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void addCustomer(User user) {
+    public static void addCustomer(User user){
         String insertCardQuery = "INSERT INTO customer (name, surname, phone_number) VALUES (?, ?, ?)";
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl(url);
@@ -295,7 +327,7 @@ public class Bank {
     }
 
     public static void addMortgageCard(MortgageCard card) {
-        String insertCardQuery = "INSERT INTO mortgage_card (card_number, pin, month_pay, month_left, surcharge, total_pay, customer_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insertCardQuery = "INSERT INTO credit_card (card_number, pin, customer_id) VALUES (?, ?, ?, ?)";
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl(url);
 
@@ -303,12 +335,8 @@ public class Bank {
             PreparedStatement psInsertCard = connection.prepareStatement(insertCardQuery);
 
             psInsertCard.setString(1, card.getNumber());
-            psInsertCard.setInt(2, card.getPin());
-            psInsertCard.setDouble(3, card.getMonthPay());
-            psInsertCard.setInt(4, card.getMonthLeft());
-            psInsertCard.setDouble(5, card.getSurcharge());
-            psInsertCard.setDouble(6, card.getMonthPay());
-            psInsertCard.setInt(7, card.getCustomerId());
+            psInsertCard.setString(2, "" + card.getPin());
+            psInsertCard.setString(4, ""+ card.getCustomerId());
 
             psInsertCard.executeUpdate();
 
@@ -327,9 +355,9 @@ public class Bank {
 
             psInsertCard.setString(1, card.getNumber());
             psInsertCard.setString(2, "" + card.getPin());
-            psInsertCard.setString(3, "" + card.getBalance());
-            psInsertCard.setString(4, "" + card.getMaxBalance());
-            psInsertCard.setString(5, "" + card.customerId);
+            psInsertCard.setString(3, ""+ card.getBalance());
+            psInsertCard.setString(4, ""+ card.getMaxBalance());
+            psInsertCard.setString(5, ""+ card.customerId);
 
             psInsertCard.executeUpdate();
 

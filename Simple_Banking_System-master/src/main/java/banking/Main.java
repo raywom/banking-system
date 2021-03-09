@@ -55,13 +55,41 @@ public class Main {
                         user.setDebitCard(true);
                         break;
                     case 2:
-                        user.logIn(showLogInDialogue());
-                        if (user.isLoggedIn()) {
-                            System.out.println("\n\rYou have successfully logged in!\n\r");
-                            int returnTo = showCardDialogue(user.getCard());
-                            user.logOut();
-                            System.out.println("\n\rYou have successfully logged out!\n\r");
-                            if (returnTo == 0) break mainMenu;
+                        System.out.println("1) Credit card");
+                        System.out.println("2) Mortgage card");
+                        System.out.println("3) card off");
+
+                        switch (scanner.nextInt()){
+                            case 1:
+                                user.logIn(showLogInDialogueForCredit());
+                                if (user.isLoggedIn()) {
+                                    System.out.println("\n\rYou have successfully logged in!\n\r");
+                                    int returnTo = showCardDialogue(user.getCreditCard());
+                                    user.logOut();
+                                    System.out.println("\n\rYou have successfully logged out!\n\r");
+                                    if (returnTo == 0) break mainMenu;
+                                }
+                                break;
+                            case 2:
+                                user.logIn(showLogInDialogueForMortgage());
+                                if (user.isLoggedIn()) {
+                                    System.out.println("\n\rYou have successfully logged in!\n\r");
+                                    int returnTo = showCardDialogue(user.getMortgageCard());
+                                    user.logOut();
+                                    System.out.println("\n\rYou have successfully logged out!\n\r");
+                                    if (returnTo == 0) break mainMenu;
+                                }
+                                break;
+                            case 3:
+                                user.logIn(showLogInDialogue());
+                                if (user.isLoggedIn()) {
+                                    System.out.println("\n\rYou have successfully logged in!\n\r");
+                                    int returnTo = showCardDialogue(user.getCard());
+                                    user.logOut();
+                                    System.out.println("\n\rYou have successfully logged out!\n\r");
+                                    if (returnTo == 0) break mainMenu;
+                                }
+                                break;
                         }
                         break;
                     case 0:
@@ -76,10 +104,9 @@ public class Main {
                         ">");
                 switch (scanner.nextInt()) {
                     case 1:
-                        System.out.println("Enter id of customer");
+                        System.out.println("Enter phone customer");
                         int idCustomer = scanner.nextInt();
                         printNewAccount(Bank.createCreditCard(idCustomer));
-                        Bank.changeStatusOfCreditCard(idCustomer);
                         break;
                     case 2:
                         System.out.println("Enter phone customer");
@@ -120,23 +147,59 @@ public class Main {
 
     public static void printNewAccount(MortgageCard card) {
         System.out.println("\n\rYour card has been created\n\rYour card number:");
-        System.out.println(card.getNumber());
+        System.out.printf("%016d%n", card.getNumber());
         System.out.println("Your card PIN:");
-        System.out.println(card.getPin());
+        System.out.printf("%04d%n%n", card.getPin());
     }
 
     public static void printNewAccount(CreditCard card) {
         System.out.println("\n\rYour card has been created\n\rYour card number:");
-        System.out.println(card.getNumber());
+        System.out.printf("%016d%n", card.getNumber());
         System.out.println("Your card PIN:");
-        System.out.println(card.getPin());
+        System.out.printf("%04d%n%n", card.getPin());
     }
 
     public static void printNewAccount(Card card) {
         System.out.println("\n\rYour card has been created\n\rYour card number:");
-        System.out.println(card.getCardNumber());
+        System.out.printf("%016d%n", card.getCardNumber());
         System.out.println("Your card PIN:");
-        System.out.println(card.getPin());
+        System.out.printf("%04d%n%n", card.getPin());
+    }
+
+    public static MortgageCard showLogInDialogueForMortgage() {
+        System.out.print("\n\rEnter your card number:\n\r>");
+        String cardNumber = scanner.nextLine();
+        System.out.print("Enter your PIN:\n\r>");
+        int pin = scanner.nextInt();
+
+        MortgageCard card = new MortgageCard();
+        card.setNumber(cardNumber);
+        card.setPin(pin);
+
+        if (Bank.getCardsFromDB().contains(card)) {
+            return card;
+        } else {
+            System.out.println("\n\rWrong card number or PIN!\r\n");
+            return null;
+        }
+    }
+
+    public static CreditCard showLogInDialogueForCredit() {
+        System.out.print("\n\rEnter your card number:\n\r>");
+        String cardNumber = scanner.nextLine();
+        System.out.print("Enter your PIN:\n\r>");
+        int pin = scanner.nextInt();
+
+        CreditCard card = new CreditCard();
+        card.setNumber(cardNumber);
+        card.setPin(pin);
+
+        if (Bank.getCardsFromDB().contains(card)) {
+            return card;
+        } else {
+            System.out.println("\n\rWrong card number or PIN!\r\n");
+            return null;
+        }
     }
 
 
@@ -189,6 +252,52 @@ public class Main {
         }
     }
 
+    public static int showCardDialogue(MortgageCard card) {
+        while(true) {
+            System.out.print(
+                    "\n5. Log out" +
+                    "\n0. Exit" +
+                    "\n>");
+            switch (scanner.nextInt()) {
+                case 5:
+                    return 2;
+                case 0:
+                    return 0;
+                default:
+                    System.out.println("Wrong number!\r\nTry again...\r\n\n");
+            }
+        }
+    }
+
+    public static int showCardDialogue(CreditCard card) {
+        while(true) {
+            System.out.print("\n1. Balance" +
+                    "\n2. Add income" +
+                    "\n3. Close account" +
+                    "\n4. Log out" +
+                    "\n0. Exit" +
+                    "\n>");
+
+            switch (scanner.nextInt()) {
+                case 2:
+                    showAddIncomeDialogue(card);
+                case 1:
+                    System.out.println("\nBalance: " + card.getBalance() + "\n");
+                    break;
+                case 3:
+                    card.deleteCardFromDBCredit();
+                    System.out.println("\nThe account has been closed!");
+                    break;
+                case 4:
+                    return 2;
+                case 0:
+                    return 0;
+                default:
+                    System.out.println("Wrong number!\r\nTry again...\r\n\n");
+            }
+        }
+    }
+
     public static void showAddIncomeDialogue(Card card) {
         double amount;
         while(true) {
@@ -202,6 +311,21 @@ public class Main {
         }
         card.addBalanceToDB(amount);
     }
+
+    public static void showAddIncomeDialogue(CreditCard card) {
+        double amount;
+        while(true) {
+            System.out.print("Enter the amount:\n>");
+            amount = scanner.nextDouble();
+
+            if (amount >= 0) break;
+            else {
+                System.out.println("Wrong number!\r\nTry again...\r\n\n");
+            }
+        }
+        card.addBalanceToDBCredit(amount);
+    }
+
 
 
     public static void doTransferDialogue(Card card) {
@@ -273,13 +397,9 @@ public class Main {
         }
         else {
             if (what == 1){
-                System.out.println("net 1");
-                scanner.nextLine();
                 System.out.println("Enter your login");
-                System.out.println("da 1");
                 String login = scanner.nextLine();
                 System.out.println("Enter your password");
-                System.out.println("da 2");
                 String password = scanner.nextLine();
                 banker = Bank.bankerSearch(login, password);
             }

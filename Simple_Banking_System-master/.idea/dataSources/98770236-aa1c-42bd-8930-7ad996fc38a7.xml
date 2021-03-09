@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="card">
+  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.19">
+    <root id="1">
+      <ServerVersion>3.34.0</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="main">
+      <Current>1</Current>
+    </schema>
+    <collation id="3" parent="1" name="BINARY"/>
+    <collation id="4" parent="1" name="NOCASE"/>
+    <collation id="5" parent="1" name="RTRIM"/>
+    <table id="6" parent="2" name="bank_worker"/>
+    <table id="7" parent="2" name="credit_card"/>
+    <table id="8" parent="2" name="customer"/>
+    <table id="9" parent="2" name="debit_card"/>
+    <table id="10" parent="2" name="mortgage_card"/>
+    <table id="11" parent="2" name="sqlite_master">
+      <System>1</System>
+    </table>
+    <table id="12" parent="2" name="sqlite_sequence">
+      <System>1</System>
+    </table>
+    <table id="13" parent="2" name="transaction_log"/>
+    <column id="14" parent="6" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="15" parent="6" name="surname">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="16" parent="6" name="name">
+      <Position>3</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="17" parent="6" name="phone_number">
+      <Position>4</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="18" parent="6" name="password">
+      <Position>5</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="19" parent="6" name="login">
+      <Position>6</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <index id="20" parent="6" name="bank_worker_id_uindex">
+      <ColNames>id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <index id="21" parent="6" name="bank_worker_login_uindex">
+      <ColNames>login</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="22" parent="6" name="bank_worker_pk">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>bank_worker_id_uindex</UnderlyingIndexName>
+    </key>
+    <column id="23" parent="7" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="24" parent="7" name="card_number">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="25" parent="7" name="pin">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="26" parent="7" name="balance">
+      <Position>4</Position>
+      <DataType>REAL|0s</DataType>
+    </column>
+    <column id="27" parent="7" name="max_credit">
+      <Position>5</Position>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>-50000</DefaultExpression>
+    </column>
+    <column id="28" parent="7" name="customer_id">
+      <Position>6</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <index id="29" parent="7" name="credit_card_id_uindex">
+      <ColNames>id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="30" parent="7" name="сredit_card_pk">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>credit_card_id_uindex</UnderlyingIndexName>
+    </key>
+    <foreign-key id="31" parent="7">
+      <ColNames>customer_id</ColNames>
+      <RefTableName>customer</RefTableName>
+      <RefKeyName>customer_pk</RefKeyName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>set-null</OnDelete>
+      <OnUpdate>set-null</OnUpdate>
+    </foreign-key>
+    <column id="32" parent="8" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="33" parent="8" name="name">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="34" parent="8" name="surname">
+      <Position>3</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="35" parent="8" name="phone_number">
+      <Position>4</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="36" parent="8" name="password">
+      <Position>5</Position>
+      <DataType>TEXT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="37" parent="8" name="has_mortgage">
+      <Position>6</Position>
+      <DataType>INTEGER|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="38" parent="8" name="has_debit_card">
+      <Position>7</Position>
+      <DataType>INTEGER|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="39" parent="8" name="has_credit_card">
+      <Position>8</Position>
+      <DataType>INTEGER|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <key id="40" parent="8" name="customer_pk">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="41" parent="9" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="42" parent="9" name="number">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="43" parent="9" name="pin">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="44" parent="9" name="balance">
+      <Position>4</Position>
+      <DataType>REAL|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="45" parent="9" name="customer_id">
+      <Position>5</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <key id="46" parent="9" name="card_pk">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="47" parent="9">
+      <ColNames>customer_id</ColNames>
+      <RefTableName>customer</RefTableName>
+      <RefKeyName>customer_pk</RefKeyName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>set-null</OnDelete>
+      <OnUpdate>set-null</OnUpdate>
+    </foreign-key>
+    <column id="48" parent="10" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="49" parent="10" name="card_number">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="50" parent="10" name="pin">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="51" parent="10" name="month_pay">
+      <Position>4</Position>
+      <DataType>REAL|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="52" parent="10" name="month_left">
+      <Position>5</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="53" parent="10" name="surcharge">
+      <Position>6</Position>
+      <DataType>REAL|0s</DataType>
+    </column>
+    <column id="54" parent="10" name="total_pay">
+      <Position>7</Position>
+      <DataType>REAL|0s</DataType>
+    </column>
+    <column id="55" parent="10" name="customer_id">
+      <Position>8</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <index id="56" parent="10" name="mortgage_card_id_uindex">
+      <ColNames>id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="57" parent="10" name="mortgage_card_pk">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>mortgage_card_id_uindex</UnderlyingIndexName>
+    </key>
+    <foreign-key id="58" parent="10">
+      <ColNames>customer_id</ColNames>
+      <RefTableName>customer</RefTableName>
+      <RefKeyName>customer_pk</RefKeyName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>set-null</OnDelete>
+      <OnUpdate>set-null</OnUpdate>
+    </foreign-key>
+    <column id="59" parent="11" name="type">
+      <Position>1</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="60" parent="11" name="name">
+      <Position>2</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="61" parent="11" name="tbl_name">
+      <Position>3</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="62" parent="11" name="rootpage">
+      <Position>4</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="63" parent="11" name="sql">
+      <Position>5</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="64" parent="12" name="name">
+      <Position>1</Position>
+    </column>
+    <column id="65" parent="12" name="seq">
+      <Position>2</Position>
+    </column>
+    <column id="66" parent="13" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="67" parent="13" name="date">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="68" parent="13" name="customer_id">
+      <Position>3</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="69" parent="13" name="transaction_log_id_uindex">
+      <ColNames>id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="70" parent="13" name="transaction_log_pk">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>transaction_log_id_uindex</UnderlyingIndexName>
+    </key>
+    <foreign-key id="71" parent="13">
+      <ColNames>customer_id</ColNames>
+      <RefTableName>customer</RefTableName>
+      <RefKeyName>customer_pk</RefKeyName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>set-null</OnDelete>
+      <OnUpdate>set-null</OnUpdate>
+    </foreign-key>
+  </database-model>
+</dataSource>
